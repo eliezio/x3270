@@ -21,7 +21,7 @@ sha256sums=('db513225f074144a5a0221d57ede37cca1468c2c2d158ea09981f50012ebdbe7'
 
 build() {
     cd $srcdir/suite3270-${pkgver:0:3} 
-    ./configure --enable-unix --enable-c3270 --prefix=/usr --bindir=/usr/bin --sysconfdir=/etc --with-fontdir=/usr/share/fonts/3270
+    ./configure --enable-unix --enable-c3270 --prefix=/usr --bindir=/usr/bin --sysconfdir=/etc --with-fontdir=/usr/share/fonts/3270 --with-openssl=/usr/local/openssl-1.0
     make -j$(grep processor -c /proc/cpuinfo) all || return 1
 }
 
