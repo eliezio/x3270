@@ -9,8 +9,8 @@ pkgdesc="An IBM 3270 terminal emulator for the X Window System"
 arch=('i686' 'x86_64')
 url="http://x3270.bgp.nu/"
 license=('BSD' 'MIT')
-depends=('openssl' 'libxaw' 'xorg-mkfontdir' 'tcl')
-makedepends=('openssl' 'libx11' 'libxaw' 'libxt' 'xbitmaps' 'xorg-bdftopcf' 'readline' 'ncurses' 'm4')
+depends=('openssl-1.0' 'libxaw' 'xorg-mkfontdir' 'tcl')
+makedepends=('openssl-1.0' 'libx11' 'libxaw' 'libxt' 'xbitmaps' 'xorg-bdftopcf' 'readline' 'ncurses' 'm4')
 backup=(etc/x3270/ibm_hosts)
 install=x3270.install
 source=(http://x3270.bgp.nu/download/$pkgpath/suite3270-$pkgver-src.tgz
@@ -21,7 +21,10 @@ sha256sums=('db513225f074144a5a0221d57ede37cca1468c2c2d158ea09981f50012ebdbe7'
 
 build() {
     cd $srcdir/suite3270-${pkgver:0:3} 
-    ./configure --enable-unix --enable-c3270 --prefix=/usr --bindir=/usr/bin --sysconfdir=/etc --with-fontdir=/usr/share/fonts/3270
+    mkdir -p ../openssl-1.0/include
+    ln -sf /usr/include/openssl-1.0/openssl ../openssl-1.0/include/
+    ln -sf /usr/lib/openssl-1.0 ../openssl-1.0/lib
+    ./configure --enable-unix --enable-c3270 --prefix=/usr --bindir=/usr/bin --sysconfdir=/etc --with-fontdir=/usr/share/fonts/3270 --with-openssl=$srcdir/openssl-1.0
     make -j$(grep processor -c /proc/cpuinfo) all || return 1
 }
 
